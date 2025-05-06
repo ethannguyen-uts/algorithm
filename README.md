@@ -1,5 +1,1 @@
 # algorithm
-
-Leetcode
-
-test
