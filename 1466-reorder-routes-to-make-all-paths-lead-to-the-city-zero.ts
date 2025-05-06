@@ -1,51 +1,47 @@
-function minReorder(n: number, connections: number[][]): number {
-    const connect = new Map();
-    for (let i = 0; i < connections.length; i++) {
+function minReorderToCityZero(n: number, connections: number[][]): number {
+  const graph = new Map();
+  for (let i = 0; i < connections.length; i++) {
+    const a = connections[i][0];
+    const b = connections[i][1];
 
-        const a = connections[i][0];
-        const b = connections[i][1];
-        if (!connect.has(a)) {
-            connect.set(a, []);
-        }
-        const arr1 = connect.get(a)
-        arr1.push([b, 1])
+    if (!graph.has(a)) {
+      graph.set(a, []);
+    }
+    const toCity = graph.get(a);
+    toCity.push([b, 1]);
 
-        if (!connect.has(b)) {
-            connect.set(b, [])
-        }
+    if (!graph.has(b)) {
+      graph.set(b, []);
+    }
+    const fromCity = graph.get(b);
+    fromCity.push([a, 0]);
+  }
 
-        const arr2 = connect.get(b)
-        arr2.push([a, 0])
+  const visited: Set<number> = new Set<number>();
+  let totalFlips = 0;
 
+  const dfs = (city: number) => {
+    if (visited.has(city)) {
+      return;
     }
 
-    const visited: Set<number> = new Set<number>();
-    let totalFlip = 0;
+    visited.add(city);
 
-    const dfs = (city: number) => {
-        if (visited.has(city)) {
-            return
-        }
+    const cityConnections = graph.get(city);
+    for (let i = 0; i < cityConnections.length; i++) {
+      const [neighborCity, flipRequired] = cityConnections[i];
 
-
-        visited.add(city)
-
-        const myConnections = connect.get(city);
-        console.log(myConnections)
-        for (let i = 0; i < myConnections.length; i++) {
-            const current = myConnections[i]
-
-            if (!visited.has(current[0])) {
-                totalFlip = totalFlip + current[1];
-                dfs(current[0])
-            }
-        }
+      if (!visited.has(neighborCity)) {
+        totalFlips += flipRequired;
+        dfs(neighborCity);
+      }
     }
+  };
 
-    dfs(0)
+  dfs(0);
 
-    return totalFlip;
-};
+  return totalFlips;
+}
 
 /*
     For each connection, we need to know the direction of one city to another
@@ -57,5 +53,3 @@ function minReorder(n: number, connections: number[][]): number {
     from 0 we go to it neighbour city => if direction is from city 0 to city 1 
         => We need to flip the direction => (add the number of edge changes)
 */
-
-
