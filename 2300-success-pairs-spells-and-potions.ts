@@ -9,14 +9,13 @@ function successfulPairs(
   for (let i = 0; i < spells.length; i++) {
     const spell = spells[i];
 
-    let mid = -1;
     let position = -1;
     let found = false;
     let left = 0;
-    let right = potions.length - 1;
+    let right = sortedPotions.length - 1;
     while (left <= right) {
       const mid = Math.floor((left + right) / 2);
-      if (spell * potions[mid] >= success) {
+      if (spell * sortedPotions[mid] >= success) {
         found = true;
         right = mid - 1;
         position = mid;
