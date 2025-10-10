@@ -11,18 +11,18 @@ public class Solution {
         var left = 0;
         var right = window - 1;
 
-        var totalWindow = 0;
+        var windowSum = 0;
         for (var i = 0; i < window; i++){
-            totalWindow+=cardPoints[i];
+            windowSum+=cardPoints[i];
         }
         var max = 0;
 
         while (right < cardPoints.Length){
-            max = Math.Max(max, sum - totalWindow);
+            max = Math.Max(max, sum - windowSum);
             right+=1;
             left+=1;
             if (right < cardPoints.Length){
-                totalWindow = totalWindow + cardPoints[right] - cardPoints[left - 1];
+                windowSum = windowSum + cardPoints[right] - cardPoints[left - 1];
             }
         }
         return max;
